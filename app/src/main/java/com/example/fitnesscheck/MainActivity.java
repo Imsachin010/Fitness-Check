@@ -12,10 +12,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
     EditText edSleep_Hours;
     Button btn, btn2, btn3, btn1, btnokHr;
     TextView tv,txtSleepHr;
+    private JsonUtils JsonUtils;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +70,62 @@ public class MainActivity extends AppCompatActivity {
          btnokHr.setOnClickListener(v -> {
              String SleepHr = edSleep_Hours.getText().toString();
              txtSleepHr.setText(SleepHr+" hours");
+
          });
+
+        // Read JSON data from the file
+        JSONObject healthData = JsonUtils.loadJsonObjectFromAsset(this, "health_data.json");
+
+        // Example: Display the first value of each parameter in TextViews
+        TextView textViewBodyTemp = findViewById(R.id.textViewBodyTemp);
+        TextView textViewLimbMovement = findViewById(R.id.textViewLimbMovement);
+        TextView textViewSpo2 = findViewById(R.id.textViewSpo2);
+//        TextView textViewSleepingHours = findViewById(R.id.textViewSleepingHours);
+        TextView textViewHeartRate = findViewById(R.id.textViewHeartRate);
+//        TextView textViewStressLevel = findViewById(R.id.textViewStressLevel);
+//        TextView textViewFitness = findViewById(R.id.textViewFitness);
+
+        try {
+            JSONArray bodyTempArray = healthData.getJSONArray("body_temperature");
+            JSONArray limbMovementArray = healthData.getJSONArray("limb_movement");
+            JSONArray spo2Array = healthData.getJSONArray("Blood_oxygen");
+            JSONArray sleepingHoursArray = healthData.getJSONArray("Sleeping_hours");
+            JSONArray heartRateArray = healthData.getJSONArray("Heart_rate");
+            JSONArray stressLevelArray = healthData.getJSONArray("Stress_level");
+            JSONArray fitnessArray = healthData.getJSONArray("fitness");
+
+            // Display the first values in TextViews
+            if (bodyTempArray.length() > 0) {
+                double bodyTemp = bodyTempArray.getDouble(0);
+                textViewBodyTemp.setText("Body Temperature: " + bodyTemp + " °C");
+            }
+            if (limbMovementArray.length() > 0) {
+                double limbMovement = limbMovementArray.getDouble(0);
+                textViewLimbMovement.setText("Limb Movement: " + limbMovement);
+            }
+            if (spo2Array.length() > 0) {
+                double spo2 = spo2Array.getDouble(0);
+                textViewSpo2.setText("Spo2 Level: " + spo2 + " %");
+            }
+//            if (sleepingHoursArray.length() > 0) {
+//                double sleepingHours = sleepingHoursArray.getDouble(0);
+//                textViewSleepingHours.setText("Sleeping Hours: " + sleepingHours + " hrs");
+//            }
+            if (heartRateArray.length() > 0) {
+                double heartRate = heartRateArray.getDouble(0);
+                textViewHeartRate.setText("Heart Rate: " + heartRate + " bpm");
+            }
+//            if (stressLevelArray.length() > 0) {
+//                int stressLevel = stressLevelArray.getInt(0);
+//                textViewStressLevel.setText("Stress Level: " + stressLevel);
+//            }
+//            if (fitnessArray.length() > 0) {
+//                double fitness = fitnessArray.getDouble(0);
+//                textViewFitness.setText("Fitness Level: " + fitness);
+//            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 }

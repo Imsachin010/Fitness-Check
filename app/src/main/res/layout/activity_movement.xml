@@ -73,6 +73,7 @@
           android:layout_height="wrap_content"
           android:layout_marginTop="80dp"
           android:ems="10"
+          android:id="@+id/textViewLimbMovement"
           android:text="8878 Steps"
           android:textAlignment="center"
           android:textColor="@color/yale_blue"

@@ -75,6 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:id="@+id/textViewHeartRate"
                     android:text="88"
                     android:textAlignment="center"
                     android:textColor="@color/yale_blue"
